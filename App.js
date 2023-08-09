@@ -11,11 +11,12 @@ export default function App() {
   const buscarHandle= () =>{
     let URL = `https://economia.awesomeapi.com.br/last/USD-BRL`
     setValorConvertido(URL);
-  }
+  };
 
-  const limparResultado(){
+  const limparResultado= () => {
     setValorConvertido('')
-  }
+  };
+
   return (
     <View style={styles.container}>
       <View>
