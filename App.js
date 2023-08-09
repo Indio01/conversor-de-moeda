@@ -12,6 +12,10 @@ export default function App() {
     let URL = `https://economia.awesomeapi.com.br/last/USD-BRL`
     setValorConvertido(URL);
   }
+
+  const limparResultado(){
+    setValorConvertido('')
+  }
   return (
     <View style={styles.container}>
       <View>
@@ -42,7 +46,7 @@ export default function App() {
 
       <View>
           <Pressable style={styles.botao}>
-              <Text>Calcular</Text>
+              <Text>Buscar Valor</Text>
           </Pressable>
       </View>
 
