@@ -8,17 +8,17 @@ export default function App() {
   const [moedaOrigem, setMoedaOrigem] = useState('BRL')
   const [moedaDestino, setMoedaDestino] = useState('USD')
   const [valorConvertido, setValorConvertido] = useState('')
+  const [valorOriginal, setValorOriginal] = useState('3.3')
 
   const buscarHandle= async () =>{
     let URL = `https://economia.awesomeapi.com.br/last/${moedaOrigem}-${moedaDestino}`
     try {
       let page= await fetch(URL)
       let json = await page.json()
-      // console.log(json)
       let indice = parseFloat(json[`${moedaOrigem}${moedaDestino}`].high)
-      console.log(indice)
+      setValorConvertido(indice)
     } catch (error){
-
+      setValorConvertido(`Erro: ${error.message}`)
     }
 
     // setValorConvertido(URL);
@@ -40,7 +40,7 @@ export default function App() {
         >
           <Picker.Item label="Real Brasileiro" value="BRL" />
           <Picker.Item label="Dolar Americano" value="USD" />
-          <Picker.Item label="Ouro" value="XAU" />
+          <Picker.Item label="Euro" value="EUR" />
           <Picker.Item label="Bitcoin" value="BTC" />
         </Picker>
       </View>
@@ -54,9 +54,14 @@ export default function App() {
         >
           <Picker.Item label="Real Brasileiro" value="BRL" />
           <Picker.Item label="Dolar Americano" value="USD" />
-          <Picker.Item label="Ouro" value="XAU" />
+          <Picker.Item label="Euro" value="EUR" />
           <Picker.Item label="Bitcoin" value="BTC" />
         </Picker>
+      </View>
+
+      <View>
+        <Text>Valor Orginal</Text>
+        <TextInput value='valorOriginal' onChangeText={setValorOriginal} keyboardType='numeric'/>
       </View>
 
       <View>
