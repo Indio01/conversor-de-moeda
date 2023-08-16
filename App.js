@@ -61,7 +61,7 @@ export default function App() {
 
       <View>
         <Text>Valor Orginal</Text>
-        <TextInput value='valorOriginal' onChangeText={setValorOriginal} keyboardType='numeric'/>
+        <TextInput value={valorOriginal} onChangeText={setValorOriginal} keyboardType='numeric'/>
       </View>
 
       <View>
