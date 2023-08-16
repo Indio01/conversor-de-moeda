@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
@@ -8,9 +9,19 @@ export default function App() {
   const [moedaDestino, setMoedaDestino] = useState('USD')
   const [valorConvertido, setValorConvertido] = useState('')
 
-  const buscarHandle= () =>{
-    let URL = `https://economia.awesomeapi.com.br/last/USD-BRL`
-    setValorConvertido(URL);
+  const buscarHandle= async () =>{
+    let URL = `https://economia.awesomeapi.com.br/last/${moedaOrigem}-${moedaDestino}`
+    try {
+      let page= await fetch(URL)
+      let json = await page.json()
+      // console.log(json)
+      let indice = parseFloat(json[`${moedaOrigem}${moedaDestino}`].high)
+      console.log(indice)
+    } catch (error){
+
+    }
+
+    // setValorConvertido(URL);
   };
 
   const limparResultado= () => {
@@ -19,9 +30,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>Conversor de Moedas</Text>
       <View>
         <Text>Moeda 1</Text>
         <Picker
+          style={{height: 50, width: 200,}}
           selectedValue={moedaOrigem}
           onValueChange={(itemValue, itemIndex) => setMoedaOrigem(itemValue)}
         >
@@ -35,6 +48,7 @@ export default function App() {
       <View>
         <Text>Moeda 2</Text>
         <Picker
+          style={{height: 50, width: 200,}}
           selectedValue={moedaDestino}
           onValueChange={(itemValue, itemIndex) => setMoedaDestino(itemValue)}
         >
@@ -46,13 +60,10 @@ export default function App() {
       </View>
 
       <View>
-          <Pressable style={styles.botao}>
+          <Pressable onPress={buscarHandle}>
               <Text>Buscar Valor</Text>
           </Pressable>
-      </View>
-
-      <View>
-          <Text>Resultado</Text>
+          <Text>{`Resultado: ${valorConvertido}`}</Text>
       </View>
     </View>
   );
@@ -64,13 +75,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  input: {
-    margin: 2,
-    width: 200,
-    textAlign: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 2,
   },
 });
