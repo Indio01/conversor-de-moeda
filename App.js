@@ -16,16 +16,17 @@ export default function App() {
       let page= await fetch(URL)
       let json = await page.json()
       let indice = parseFloat(json[`${moedaOrigem}${moedaDestino}`].high)
-      setValorConvertido(indice)
+      setValorConvertido(valorOriginal * indice);     
     } catch (error){
       setValorConvertido(`Erro: ${error.message}`)
     }
-
-    // setValorConvertido(URL);
   };
 
   const limparResultado= () => {
     setValorConvertido('')
+    setValorOriginal('3.3')
+    setMoedaOrigem('BRL')
+    setMoedaDestino('USD')
   };
 
   return (
@@ -60,13 +61,16 @@ export default function App() {
       </View>
 
       <View>
-        <Text>Valor Orginal</Text>
+        <Text>{`Valor em ${moedaOrigem} a ser convertido:`}</Text>
         <TextInput value={valorOriginal} onChangeText={setValorOriginal} keyboardType='numeric'/>
       </View>
 
       <View>
           <Pressable onPress={buscarHandle}>
               <Text>Buscar Valor</Text>
+          </Pressable>
+          <Pressable onPress={limparResultado}>
+              <Text>Limpar</Text>
           </Pressable>
           <Text>{`Resultado: ${valorConvertido}`}</Text>
       </View>
