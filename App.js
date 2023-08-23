@@ -35,9 +35,8 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.texto}>Conversor de Moedas</Text>
       <View>
-        <Text style={styles.texto}>Moeda 1</Text>
         <Picker
-          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 20, padding:20,}}
+          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 20, marginBottom:10,}}
           selectedValue={moedaOrigem}
           onValueChange={(itemValue, itemIndex) => setMoedaOrigem(itemValue)}
         >
@@ -49,9 +48,8 @@ export default function App() {
       </View>
 
       <View>
-        <Text style={styles.texto}>Moeda 2</Text>
         <Picker
-          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 5, padding:20,}}
+          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 5, marginBottom:10,}}
           selectedValue={moedaDestino}
           onValueChange={(itemValue, itemIndex) => setMoedaDestino(itemValue)}
         >
@@ -73,7 +71,9 @@ export default function App() {
           <Pressable style={styles.botao} onPress={limparResultado}>
               <Text style={styles.texto}>Limpar</Text>
           </Pressable>
-          <Text style={styles.texto}>{`Resultado: ${valorConvertido}`}</Text>
+          <View style={styles.botaoResultado}>
+            <Text style={styles.texto}>{`Resultado: ${valorConvertido}`}</Text>
+          </View>
       </View>
     </View>
   );
