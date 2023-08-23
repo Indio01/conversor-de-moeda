@@ -2,13 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import styles from './styles';
 
 export default function App() {
 
   const [moedaOrigem, setMoedaOrigem] = useState('BRL')
   const [moedaDestino, setMoedaDestino] = useState('USD')
   const [valorConvertido, setValorConvertido] = useState('')
-  const [valorOriginal, setValorOriginal] = useState('3.3')
+  const [valorOriginal, setValorOriginal] = useState('33.33')
 
   const buscarHandle= async () =>{
     let URL = `https://economia.awesomeapi.com.br/last/${moedaOrigem}-${moedaDestino}`
@@ -16,7 +17,8 @@ export default function App() {
       let page= await fetch(URL)
       let json = await page.json()
       let indice = parseFloat(json[`${moedaOrigem}${moedaDestino}`].high)
-      setValorConvertido(valorOriginal * indice);     
+      let valor= parseFloat(valorOriginal)
+      setValorConvertido((indice * valor).toFixed(2))    
     } catch (error){
       setValorConvertido(`Erro: ${error.message}`)
     }
@@ -24,18 +26,18 @@ export default function App() {
 
   const limparResultado= () => {
     setValorConvertido('')
-    setValorOriginal('3.3')
+    setValorOriginal('33.33')
     setMoedaOrigem('BRL')
     setMoedaDestino('USD')
   };
 
   return (
     <View style={styles.container}>
-      <Text>Conversor de Moedas</Text>
+      <Text style={styles.texto}>Conversor de Moedas</Text>
       <View>
-        <Text>Moeda 1</Text>
+        <Text style={styles.texto}>Moeda 1</Text>
         <Picker
-          style={{height: 50, width: 200,}}
+          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 20, padding:20,}}
           selectedValue={moedaOrigem}
           onValueChange={(itemValue, itemIndex) => setMoedaOrigem(itemValue)}
         >
@@ -47,9 +49,9 @@ export default function App() {
       </View>
 
       <View>
-        <Text>Moeda 2</Text>
+        <Text style={styles.texto}>Moeda 2</Text>
         <Picker
-          style={{height: 50, width: 200,}}
+          style={{height: 50, width: 300, color: "white", backgroundColor: "#373737", borderRadius: 5, padding:20,}}
           selectedValue={moedaDestino}
           onValueChange={(itemValue, itemIndex) => setMoedaDestino(itemValue)}
         >
@@ -60,29 +62,19 @@ export default function App() {
         </Picker>
       </View>
 
-      <View>
-        <Text>{`Valor em ${moedaOrigem} a ser convertido:`}</Text>
-        <TextInput value={valorOriginal} onChangeText={setValorOriginal} keyboardType='numeric'/>
+      <View style={styles.viewInput}>
+        <TextInput style={styles.input} value={valorOriginal} onChangeText={setValorOriginal} keyboardType='numeric'/>
       </View>
 
-      <View>
-          <Pressable onPress={buscarHandle}>
-              <Text>Buscar Valor</Text>
+      <View style={styles.item}>
+          <Pressable style={styles.botao} onPress={buscarHandle}>
+              <Text style={styles.texto}>Buscar Valor</Text>
           </Pressable>
-          <Pressable onPress={limparResultado}>
-              <Text>Limpar</Text>
+          <Pressable style={styles.botao} onPress={limparResultado}>
+              <Text style={styles.texto}>Limpar</Text>
           </Pressable>
-          <Text>{`Resultado: ${valorConvertido}`}</Text>
+          <Text style={styles.texto}>{`Resultado: ${valorConvertido}`}</Text>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
